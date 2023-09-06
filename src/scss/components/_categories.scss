@@ -1,0 +1,93 @@
+@import "../_variables";
+
+.categories {
+  // @media (max-width: 1300px) {
+  //   margin-bottom: 20px;
+  //   width: 100%;
+  // }
+
+  ul {
+    display: flex;
+
+    // @media (max-width: 1300px) {
+    //   justify-content: space-around;
+    // }
+
+    li {
+      background-color: #f9f9f9;
+      padding: 13px 30px;
+      border-radius: 30px;
+      margin-right: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.1s ease-in-out;
+      @include noselect();
+
+      // @media (max-width: 1060px) {
+      //   margin-bottom: 5px;
+      //   text-align: center;
+      // }
+
+      &:hover {
+        background-color: darken(#f9f9f9, 2%);
+      }
+
+      &:active {
+        background-color: darken(#f9f9f9, 5%);
+      }
+
+      &.active {
+        background-color: #282828;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@media (max-width: 1300px) {
+  .categories {
+    margin-bottom: 20px;
+    width: 100%;
+
+    ul {
+      justify-content: space-around;
+
+      li {
+        width: 185px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 1060px) {
+  .categories {
+    ul {
+      flex-wrap: wrap;
+      li {
+        width: 250px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 970px) {
+  .categories {
+    ul {
+      li {
+        width: 48%;
+      }
+    }
+  }
+}
+
+@media (max-width: 655px) {
+  .categories {
+    ul {
+      li {
+        width: 100%;
+      }
+    }
+  }
+}
