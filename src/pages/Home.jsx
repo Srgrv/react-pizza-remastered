@@ -30,13 +30,13 @@ const Home = ({ searchValue }) => {
 
   const lastPizzaIndex = pizzasPerPage * currentPage;
   const firstPizzaIndex = lastPizzaIndex - pizzasPerPage;
-  const currentPizzas = pizzas.slice(firstPizzaIndex, lastPizzaIndex);
+  // const currentPizzas = pizzas.slice(firstPizzaIndex, lastPizzaIndex);
 
-  const pageNumber = [];
+  // const pageNumber = [4];
 
-  for (let i = 1; i <= Math.ceil(pizzas.length / pizzasPerPage); i++) {
-    pageNumber.push(i);
-  }
+  // for (let i = 1; i <= Math.ceil(pizzas.length / pizzasPerPage); i++) {
+  //   pageNumber.push(i);
+  // }
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -44,6 +44,7 @@ const Home = ({ searchValue }) => {
     const category = activeCategory > 0 ? `${activeCategory}` : "";
     const order = direction ? "desc" : "asc";
     const sortBy = activeSort.sort;
+
     // const search = searchValue ? `${searchValue}` : "";
 
     const url = new URL(`https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas`);
@@ -53,6 +54,8 @@ const Home = ({ searchValue }) => {
 
       url.searchParams.append("sortBy", sortBy);
       url.searchParams.append("order", order);
+      url.searchParams.append("page", currentPage);
+      url.searchParams.append("limit", pizzasPerPage);
 
       fetch(url, {
         method: "GET",
@@ -104,7 +107,7 @@ const Home = ({ searchValue }) => {
           setIsLoading(false);
         });
     }
-  }, [activeCategory, activeSort.sort, direction, searchValue]);
+  }, [activeCategory, activeSort.sort, direction, searchValue, currentPage]);
 
   return (
     <div className="container">
@@ -120,20 +123,20 @@ const Home = ({ searchValue }) => {
           setDirection={setDirection}
         />
       </div>
-      {pageNumber.length > 1 && (
-        <Pagination
-          pageQty={pageNumber.length}
-          currentPage={currentPage}
-          setCurrentPage={(numberPage) => {
-            setCurrentPage(numberPage);
-          }}
-        />
-      )}
+
+      <Pagination
+        // pageQty={pageNumber.length}
+        currentPage={currentPage}
+        setCurrentPage={(numberPage) => {
+          setCurrentPage(numberPage);
+        }}
+      />
+
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : (currentPizzas.length ? currentPizzas : pizzas).map((key) => {
+          ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
+          : pizzas.map((key) => {
               return (
                 <PizzaBlock
                   key={key.id}
@@ -144,15 +147,14 @@ const Home = ({ searchValue }) => {
               );
             })}
       </div>
-      {pageNumber.length > 1 && (
-        <Pagination
-          pageQty={pageNumber.length}
-          currentPage={currentPage}
-          setCurrentPage={(numberPage) => {
-            setCurrentPage(numberPage);
-          }}
-        />
-      )}
+
+      <Pagination
+        // pageQty={pageNumber.length}
+        currentPage={currentPage}
+        setCurrentPage={(numberPage) => {
+          setCurrentPage(numberPage);
+        }}
+      />
     </div>
   );
 };

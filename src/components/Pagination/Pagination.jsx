@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import classes from "./Pagination.module.scss";
 
-const Pagination = ({ pageQty = 8, currentPage, setCurrentPage }) => {
+const Pagination = ({ pageQty = 3, currentPage, setCurrentPage }) => {
   const number = [];
 
   for (let i = 1; i <= pageQty; i++) {
