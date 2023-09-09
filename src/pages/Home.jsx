@@ -139,13 +139,15 @@ const Home = ({ searchValue }) => {
               );
             })}
       </div>
-      <Pagination
-        pageQty={pageNumber.length}
-        currentPage={currentPage}
-        setCurrentPage={(numberPage) => {
-          setCurrentPage(numberPage);
-        }}
-      />
+      {pageNumber.length > 1 && (
+        <Pagination
+          pageQty={pageNumber.length}
+          currentPage={currentPage}
+          setCurrentPage={(numberPage) => {
+            setCurrentPage(numberPage);
+          }}
+        />
+      )}
     </div>
   );
 };

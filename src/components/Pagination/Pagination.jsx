@@ -71,7 +71,7 @@ const Pagination = ({ pageQty = 8, currentPage, setCurrentPage }) => {
               // to={`${item}`}
               key={index}
               // href="!#"
-              className={currentPage === item ? "active" : ""}
+              className={currentPage === item ? classes.active : ""}
               onClick={() => setCurrentPage((page) => (page = item))}
             >
               {item}
