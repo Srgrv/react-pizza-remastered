@@ -133,17 +133,13 @@ const Home = ({ searchValue }) => {
       <div className="content__items">
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : currentPizzas.map((key) => {
+          : (currentPizzas.length ? currentPizzas : pizzas).map((key) => {
               return (
                 <PizzaBlock
                   key={key.id}
                   title={key.title}
                   image={key.imageUrl}
                   types={key.types}
-                  // activeType={activeType}
-                  // setActiveType={setActiveType}
-                  // activeSize={activeSize}
-                  // setActiveSize={setActiveSize}
                 />
               );
             })}
@@ -164,41 +160,3 @@ const Home = ({ searchValue }) => {
 export default Home;
 
 //Столкнулся с проблемой mockApi - если я добавляю еще search в url params, то поиск вообще не работает.Решил это следующим образом - оставил фильтрацию на фронтенде, но при начале поиска перевожу вручную категорию на Все пиццы. Таким образом делается всего 1 запрос на бек (в будущем не нужно будет даже дебаунсить все это), но фильтрация выдает нужные результаты еще и с сортировкой. Мне решение понравилось, мб будет кому-то еще полезно.
-
-// if (activeSort.sort !== "price") {
-//   fetch(
-//     `https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas?${category}&sortBy=${sortBy}${search}&order=${order}`
-//   )
-//     .then((res) => res.json())
-//     .then((json) => {
-//       setPizzas(json);
-//       setIsLoading(false);
-//     });
-// } else {
-//   fetch(
-//     `https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas?${category}&${search}`
-//   )
-//     .then((res) => res.json())
-//     .then((json) => {
-//       let sortPizza = json.sort((a, b) => {
-//         let a1 = a.types[0].sizes[0].price;
-//         let b1 = b.types[0].sizes[0].price;
-//         if (direction) {
-//           if (a1 > b1) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         } else {
-//           if (a1 < b1) {
-//             return 1;
-//           } else {
-//             return -1;
-//           }
-//         }
-//       });
-
-//       setPizzas(sortPizza);
-//       setIsLoading(false);
-//     });
-// }

@@ -49,6 +49,7 @@ const Pagination = ({ pageQty = 8, currentPage, setCurrentPage }) => {
     } else {
       setArrOfCurrButton(number);
     }
+    // eslint-disable-next-line
   }, [currentPage, pageQty]);
 
   return (
