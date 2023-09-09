@@ -6,6 +6,7 @@ import PizzaBlock from "../components/PizzaBlock";
 import Categories from "../components/Categories";
 import Skeleton from "../components/Skeleton";
 import Sort from "../components/Sort";
+import Pagination from "../components/Pagination/Pagination";
 
 const Home = ({ searchValue }) => {
   const [pizzas, setPizzas] = React.useState([]);
@@ -23,6 +24,19 @@ const Home = ({ searchValue }) => {
     name: "популярности",
     sort: "rating",
   });
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [pizzasPerPage] = React.useState(4);
+
+  const lastPizzaIndex = pizzasPerPage * currentPage;
+  const firstPizzaIndex = lastPizzaIndex - pizzasPerPage;
+  const currentPizzas = pizzas.slice(firstPizzaIndex, lastPizzaIndex);
+
+  const pageNumber = [];
+
+  for (let i = 1; i <= Math.ceil(pizzas.length / pizzasPerPage); i++) {
+    pageNumber.push(i);
+  }
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -110,7 +124,7 @@ const Home = ({ searchValue }) => {
       <div className="content__items">
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : pizzas.map((key) => {
+          : currentPizzas.map((key) => {
               return (
                 <PizzaBlock
                   key={key.id}
@@ -125,6 +139,13 @@ const Home = ({ searchValue }) => {
               );
             })}
       </div>
+      <Pagination
+        pageQty={pageNumber.length}
+        currentPage={currentPage}
+        setCurrentPage={(numberPage) => {
+          setCurrentPage(numberPage);
+        }}
+      />
     </div>
   );
 };
