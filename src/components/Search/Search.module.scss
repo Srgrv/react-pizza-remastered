@@ -1,0 +1,46 @@
+.root {
+  position: relative;
+  left: -100px;
+
+  @media (max-width: 1300px) {
+    left: 0;
+  }
+
+  @media (max-width: 650px) {
+    margin-bottom: 10px;
+  }
+}
+
+.input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px 35px;
+  //   padding-left: 35px;
+  width: 300px;
+  border-radius: 10px;
+  font-size: 15px;
+
+  &:focus {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
+
+.search svg {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  opacity: 0.3;
+}
+
+.close svg {
+  position: absolute;
+  top: 14px;
+  right: 10px;
+  opacity: 0.3;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #fe5f1e;
+    opacity: 0.8;
+  }
+}
