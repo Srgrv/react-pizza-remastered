@@ -120,6 +120,15 @@ const Home = ({ searchValue }) => {
           setDirection={setDirection}
         />
       </div>
+      {pageNumber.length > 1 && (
+        <Pagination
+          pageQty={pageNumber.length}
+          currentPage={currentPage}
+          setCurrentPage={(numberPage) => {
+            setCurrentPage(numberPage);
+          }}
+        />
+      )}
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoading
