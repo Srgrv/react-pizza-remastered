@@ -1,10 +1,32 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+//icons
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 
-const Sort = ({ activeSort, setActiveSort, direction, setDirection }) => {
+//reducers
+import { SET_ACTIVE_SORT } from "../redux/slices/filterSlice";
+
+const Sort = ({ direction, setDirection }) => {
+  const dispatch = useDispatch();
+  const { activeSort } = useSelector((state) => state.filter);
   const [visible, setVisible] = React.useState(false);
   // const [selected, setSelected] = React.useState(0);
+
+  const set_visible = () => {
+    setVisible((visible) => !visible);
+  };
+
+  const setActiveSort = ({ name, sort }) => {
+    dispatch(
+      SET_ACTIVE_SORT({
+        name,
+        sort,
+      })
+    );
+    setVisible(false);
+  };
 
   const list = [
     { name: "популярности", sort: "rating" },
@@ -12,14 +34,10 @@ const Sort = ({ activeSort, setActiveSort, direction, setDirection }) => {
     { name: "алфавиту", sort: "title" },
   ];
 
-  const set_visible = () => {
-    setVisible((visible) => !visible);
-  };
-
-  const onClickSelect = (obj) => {
-    setActiveSort(obj);
-    setVisible(false);
-  };
+  // const onClickSelect = (obj) => {
+  //   setActiveSort(obj);
+  //   setVisible(false);
+  // };
 
   return (
     <div className="sort">
@@ -45,7 +63,7 @@ const Sort = ({ activeSort, setActiveSort, direction, setDirection }) => {
                   key={`${index}_${obj.name}`}
                   className={activeSort.name === obj.name ? "active" : ""}
                   onClick={() =>
-                    onClickSelect({ name: obj.name, sort: obj.sort })
+                    setActiveSort({ name: obj.name, sort: obj.sort })
                   }
                 >
                   {obj.name}
