@@ -17,7 +17,7 @@ const Sort = ({ direction, setDirection, setActiveSort }) => {
   };
 
   const set_active_sort = ({ name, sort }) => {
-    debugger;
+    // debugger;
     setActiveSort({ name, sort });
     setVisible(false);
   };

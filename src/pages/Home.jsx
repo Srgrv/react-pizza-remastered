@@ -49,13 +49,13 @@ const Home = ({ searchParams, setSearchParams }) => {
     const order = direction ? "desc" : "asc";
 
     if (activeCategory === 0 && sort === "price" && searchParams) {
-      debugger;
+      // debugger;
       params.search = searchValue;
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory === 0 && sort !== "price" && searchValue) {
-      debugger;
+      // debugger;
       params.search = searchValue;
       params.sortBy = sort;
       params.order = order;
@@ -77,24 +77,24 @@ const Home = ({ searchParams, setSearchParams }) => {
       //   params.limit = pizzasPerPage;
       //   params.page = 1;
     } else if (activeCategory === 0 && sort === "price" && !searchParams) {
-      debugger;
+      // debugger;
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory === 0 && sort !== "price" && !searchValue) {
-      debugger;
+      // debugger;
       params.sortBy = sort;
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory > 0 && sort === "price" && !searchValue) {
-      debugger;
+      // debugger;
       params.category = activeCategory;
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory > 0 && sort !== "price" && !searchValue) {
-      debugger;
+      // debugger;
       params.category = activeCategory;
       params.sortBy = sort;
       params.order = order;
@@ -111,20 +111,20 @@ const Home = ({ searchParams, setSearchParams }) => {
     const order = direction ? "desc" : "asc";
     //category
     if (category === 0 && activeSort.sort !== "price" && !searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_CURRENT_PAGE(1));
       params.order = order;
       params.sortBy = activeSort.sort;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category === 0 && activeSort.sort === "price" && !searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_CURRENT_PAGE(1));
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort !== "price" && !searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_CURRENT_PAGE(1));
       params.category = category;
       params.sortBy = activeSort.sort;
@@ -132,14 +132,14 @@ const Home = ({ searchParams, setSearchParams }) => {
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort === "price" && !searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_CURRENT_PAGE(1));
       params.category = category;
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort === "price" && searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_SEARCH_VALUE(""));
       dispatch(SET_VALUE(""));
       params.category = category;
@@ -147,7 +147,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort !== "price" && searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_SEARCH_VALUE(""));
       dispatch(SET_VALUE(""));
       params.category = category;
@@ -156,14 +156,14 @@ const Home = ({ searchParams, setSearchParams }) => {
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category === 0 && activeSort.sort === "price" && searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_SEARCH_VALUE(""));
       dispatch(SET_VALUE(""));
       params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category === 0 && activeSort.sort !== "price" && searchValue) {
-      debugger;
+      // debugger;
       dispatch(SET_SEARCH_VALUE(""));
       dispatch(SET_VALUE(""));
       params.sortBy = activeSort.sort;
@@ -175,7 +175,6 @@ const Home = ({ searchParams, setSearchParams }) => {
   };
 
   const setCurrentPage = (numberPage) => {
-    debugger;
     dispatch(SET_CURRENT_PAGE(numberPage));
     const params = {};
     const order = direction ? "desc" : "asc";
@@ -291,7 +290,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       method: "GET",
       headers: { "content-type": "application/json" },
     };
-    debugger;
+    // debugger;
     axios.get(url, config).then((res) => {
       setPizzas(res.data);
       setIsLoading(false);
@@ -306,7 +305,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       method: "GET",
       headers: { "content-type": "application/json" },
     };
-    debugger;
+    // debugger;
 
     url.search = searchParams.toString();
     axios.get(url, config).then((res) => {
