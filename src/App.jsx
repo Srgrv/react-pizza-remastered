@@ -15,7 +15,9 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 
 function App() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams(
+    "?order=desc&sortBy=rating&limit=4&page=1"
+  );
   return (
     <Routes>
       <Route path="/" element={<Layout setSearchParams={setSearchParams} />}>

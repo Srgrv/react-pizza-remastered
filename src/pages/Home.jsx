@@ -431,6 +431,22 @@ const Home = ({ searchParams, setSearchParams }) => {
   //   value,
   // ]);
 
+  console.log("render home");
+
+  // React.useEffect(() => {
+  //   debugger;
+  //   if (!searchParams.toString()) {
+  //     const params = {};
+  //     params.order = "desc";
+  //     params.sortBy = "rating";
+  //     params.limit = 4;
+  //     params.page = 1;
+
+  //     setSearchParams(params);
+  //   }
+  //   console.log("useEffect without dependences");
+  // }, []);
+
   React.useEffect(() => {
     setIsLoading(true);
 
@@ -441,16 +457,6 @@ const Home = ({ searchParams, setSearchParams }) => {
     };
     debugger;
 
-    if (!searchParams.toString()) {
-      const params = {};
-      params.order = "desc";
-      params.sortBy = "rating";
-      params.limit = 4;
-      params.page = 1;
-
-      setSearchParams(params);
-    }
-
     // console.log(
     //   searchParams.toString() === "order=desc&sortBy=rating&limit=4&page=1"
     // );
@@ -460,6 +466,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       setPizzas(res.data);
       setIsLoading(false);
     });
+    console.log("useEffect with dependencies");
     // eslint-disable-next-line
   }, [
     // activeCategory,
