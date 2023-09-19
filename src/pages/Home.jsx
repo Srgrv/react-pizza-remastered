@@ -439,9 +439,9 @@ const Home = ({ searchParams, setSearchParams }) => {
       method: "GET",
       headers: { "content-type": "application/json" },
     };
-    // debugger;
+    debugger;
 
-    if (!searchParams.toString) {
+    if (!searchParams.toString()) {
       const params = {};
       params.order = "desc";
       params.sortBy = "rating";
