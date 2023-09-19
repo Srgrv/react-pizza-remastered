@@ -177,7 +177,7 @@ const Home = ({ searchParams, setSearchParams }) => {
 
   const setCurrentPage = (numberPage) => {
     dispatch(SET_CURRENT_PAGE(numberPage));
-    // const params = {};
+    debugger;
     // const order = direction ? "desc" : "asc";
     // if (activeCategory === 0 && activeSort.sort === "price") {
     //   params.order = order;
@@ -455,7 +455,6 @@ const Home = ({ searchParams, setSearchParams }) => {
       method: "GET",
       headers: { "content-type": "application/json" },
     };
-    debugger;
 
     // console.log(
     //   searchParams.toString() === "order=desc&sortBy=rating&limit=4&page=1"
