@@ -284,14 +284,29 @@ const Home = ({ searchParams, setSearchParams }) => {
   React.useEffect(() => {
     setIsLoading(true);
 
+    const url = new URL(
+      `https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas/?order=desc&sortBy=rating&limit=4&page=1`
+    );
+    const config = {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    };
+    debugger;
+    axios.get(url, config).then((res) => {
+      setPizzas(res.data);
+      setIsLoading(false);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+
     const url = new URL(`https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas`);
     const config = {
       method: "GET",
       headers: { "content-type": "application/json" },
     };
     debugger;
-
-    console.log(searchParams.toString());
 
     url.search = searchParams.toString();
     axios.get(url, config).then((res) => {
