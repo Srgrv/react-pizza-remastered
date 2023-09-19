@@ -59,7 +59,7 @@ const Pagination = ({ pageQty = 3, currentPage, setCurrentPage }) => {
           className={currentPage === 1 ? classes.disabled : ""}
           onClick={() => {
             if (currentPage !== 1) {
-              setCurrentPage((item) => item - 1);
+              setCurrentPage(currentPage - 1);
             }
           }}
         >
@@ -73,7 +73,7 @@ const Pagination = ({ pageQty = 3, currentPage, setCurrentPage }) => {
               key={index}
               // href="!#"
               className={currentPage === item ? classes.active : ""}
-              onClick={() => setCurrentPage((page) => (page = item))}
+              onClick={() => setCurrentPage(item)}
             >
               {item}
             </Link>
@@ -82,7 +82,7 @@ const Pagination = ({ pageQty = 3, currentPage, setCurrentPage }) => {
         <Link
           onClick={() => {
             if (currentPage !== number.length) {
-              setCurrentPage((item) => item + 1);
+              setCurrentPage(currentPage + 1);
             }
           }}
           className={currentPage === number.length ? classes.disabled : ""}

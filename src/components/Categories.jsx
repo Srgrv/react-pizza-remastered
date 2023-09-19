@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 
 const categories = [
   "Все",
@@ -11,14 +10,6 @@ const categories = [
 ];
 
 const Categories = ({ activeCategory, setActiveCategory }) => {
-  const dispatch = useDispatch();
-  // const { activeCategory } = useSelector((state) => state.filter);
-  // const [active, setActive] = React.useState(0);
-
-  // const setActiveCategory = (index) => {
-  //   dispatch(SET_ACTIVE_CATEGORY(index));
-  // };
-
   return (
     <div className="categories">
       <ul>

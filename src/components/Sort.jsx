@@ -1,30 +1,24 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useRef } from "react";
 
 //icons
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 
-//reducers
-import { SET_ACTIVE_SORT } from "../redux/slices/filterSlice";
-
-const Sort = ({ direction, setDirection }) => {
-  const dispatch = useDispatch();
+const Sort = ({ direction, setDirection, setActiveSort }) => {
   const { activeSort } = useSelector((state) => state.filter);
   const [visible, setVisible] = React.useState(false);
-  // const [selected, setSelected] = React.useState(0);
+
+  const sortRef = useRef();
 
   const set_visible = () => {
     setVisible((visible) => !visible);
   };
 
-  const setActiveSort = ({ name, sort }) => {
-    dispatch(
-      SET_ACTIVE_SORT({
-        name,
-        sort,
-      })
-    );
+  const set_active_sort = ({ name, sort }) => {
+    debugger;
+    setActiveSort({ name, sort });
     setVisible(false);
   };
 
@@ -34,13 +28,18 @@ const Sort = ({ direction, setDirection }) => {
     { name: "алфавиту", sort: "title" },
   ];
 
-  // const onClickSelect = (obj) => {
-  //   setActiveSort(obj);
-  //   setVisible(false);
-  // };
+  const handleOutsideClick = (e) => {
+    if (!e.composedPath().includes(sortRef.current)) {
+      setVisible(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.body.addEventListener("click", handleOutsideClick);
+  }, []);
 
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <div
           onClick={() => {
@@ -63,7 +62,7 @@ const Sort = ({ direction, setDirection }) => {
                   key={`${index}_${obj.name}`}
                   className={activeSort.name === obj.name ? "active" : ""}
                   onClick={() =>
-                    setActiveSort({ name: obj.name, sort: obj.sort })
+                    set_active_sort({ name: obj.name, sort: obj.sort })
                   }
                 >
                   {obj.name}

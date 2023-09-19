@@ -7,18 +7,21 @@ import { Link } from "react-router-dom";
 //components
 import Search from "./Search/Search";
 
-const Header = ({ searchValue, setSearchValue }) => {
+const Header = ({ setSearchParams }) => {
   return (
     <div className="header">
       <div className="container">
-        <Link to="/" className="header__logo">
+        <Link
+          to="/?order=desc&sortBy=rating&limit=4&page=1"
+          className="header__logo"
+        >
           <img width="38" src={logoSvg} alt="Pizza logo" />
           <div>
             <h1>React Pizza</h1>
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </Link>
-        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        <Search setSearchParams={setSearchParams} />
         <div className="header__cart">
           <Link to="cart" className="button button--cart">
             <span>520 ₽</span>

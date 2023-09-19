@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import "./scss/app.scss";
 import { Routes, Route } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 //pages
 
@@ -14,17 +15,19 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 
 function App() {
-  const [searchValue, setSearchValue] = React.useState("");
-
+  const [searchParams, setSearchParams] = useSearchParams();
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <Layout searchValue={searchValue} setSearchValue={setSearchValue} />
-        }
-      >
-        <Route index element={<Home searchValue={searchValue} />} />
+      <Route path="/" element={<Layout setSearchParams={setSearchParams} />}>
+        <Route
+          index
+          element={
+            <Home
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
+          }
+        />
         <Route path="cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
       </Route>
