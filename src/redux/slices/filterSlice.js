@@ -44,6 +44,15 @@ const filterSlice = createSlice({
     SET_VALUE(state, action) {
       state.value = action.payload;
     },
+    SET_FILTERS(state, action) {
+      state.activeCategory = action.payload.activeCategory;
+      state.activeSort.sort = action.payload.sort;
+      state.currentPage = action.payload.currentPage;
+      state.searchValue = action.payload.searchValue;
+      state.direction = action.payload.direction;
+      state.pizzasPerPage = action.payload.pizzasPerPage;
+      state.value = action.payload.value;
+    },
   },
 });
 
@@ -54,5 +63,6 @@ export const {
   SET_SEARCH_VALUE,
   SET_DIRECTION,
   SET_VALUE,
+  SET_FILTERS,
 } = filterSlice.actions;
 export default filterSlice.reducer;
