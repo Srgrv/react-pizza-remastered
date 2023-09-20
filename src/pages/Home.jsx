@@ -48,11 +48,11 @@ const Home = ({ searchParams, setSearchParams }) => {
 
     const params = {};
     const order = direction ? "desc" : "asc";
-
-    if (activeCategory === 0 && sort === "price" && searchParams) {
+    debugger;
+    if (activeCategory === 0 && sort === "price" && searchValue) {
       // debugger;
       params.search = searchValue;
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory === 0 && sort !== "price" && searchValue) {
@@ -77,9 +77,9 @@ const Home = ({ searchParams, setSearchParams }) => {
       //   params.order = order;
       //   params.limit = pizzasPerPage;
       //   params.page = 1;
-    } else if (activeCategory === 0 && sort === "price" && !searchParams) {
+    } else if (activeCategory === 0 && sort === "price" && !searchValue) {
       // debugger;
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory === 0 && sort !== "price" && !searchValue) {
@@ -91,7 +91,7 @@ const Home = ({ searchParams, setSearchParams }) => {
     } else if (activeCategory > 0 && sort === "price" && !searchValue) {
       // debugger;
       params.category = activeCategory;
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (activeCategory > 0 && sort !== "price" && !searchValue) {
@@ -121,7 +121,7 @@ const Home = ({ searchParams, setSearchParams }) => {
     } else if (category === 0 && activeSort.sort === "price" && !searchValue) {
       // debugger;
       dispatch(SET_CURRENT_PAGE(1));
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort !== "price" && !searchValue) {
@@ -136,7 +136,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       // debugger;
       dispatch(SET_CURRENT_PAGE(1));
       params.category = category;
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort === "price" && searchValue) {
@@ -144,7 +144,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       dispatch(SET_SEARCH_VALUE(""));
       dispatch(SET_VALUE(""));
       params.category = category;
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category > 0 && activeSort.sort !== "price" && searchValue) {
@@ -160,7 +160,7 @@ const Home = ({ searchParams, setSearchParams }) => {
       // debugger;
       dispatch(SET_SEARCH_VALUE(""));
       dispatch(SET_VALUE(""));
-      params.order = order;
+      // params.order = order;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (category === 0 && activeSort.sort !== "price" && searchValue) {
@@ -194,6 +194,99 @@ const Home = ({ searchParams, setSearchParams }) => {
 
   const setDirection = (direction) => {
     dispatch(SET_DIRECTION(direction));
+    const params = {};
+    const order = direction ? "desc" : "asc";
+
+    if (activeCategory === 0 && activeSort.sort !== "price" && !searchValue) {
+      // debugger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.order = order;
+      params.sortBy = activeSort.sort;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort === "price" &&
+      !searchValue
+    ) {
+      // debugger;
+      dispatch(SET_CURRENT_PAGE(1));
+      // params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort !== "price" &&
+      !searchValue
+    ) {
+      // debugger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.category = activeCategory;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort === "price" &&
+      !searchValue
+    ) {
+      // debugger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.category = activeCategory;
+      // params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort === "price" &&
+      searchValue
+    ) {
+      // debugger;
+      dispatch(SET_SEARCH_VALUE(""));
+      dispatch(SET_VALUE(""));
+      params.category = activeCategory;
+      // params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort !== "price" &&
+      searchValue
+    ) {
+      // debugger;
+      dispatch(SET_SEARCH_VALUE(""));
+      dispatch(SET_VALUE(""));
+      params.category = activeCategory;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort === "price" &&
+      searchValue
+    ) {
+      // debugger;
+      dispatch(SET_SEARCH_VALUE(""));
+      dispatch(SET_VALUE(""));
+      // params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort !== "price" &&
+      searchValue
+    ) {
+      // debugger;
+      dispatch(SET_SEARCH_VALUE(""));
+      dispatch(SET_VALUE(""));
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    }
+    setSearchParams(params);
   };
 
   const setIsLoading = (isLoading) => {
@@ -433,19 +526,19 @@ const Home = ({ searchParams, setSearchParams }) => {
 
   console.log("render home");
 
-  // React.useEffect(() => {
-  //   debugger;
-  //   if (!searchParams.toString()) {
-  //     const params = {};
-  //     params.order = "desc";
-  //     params.sortBy = "rating";
-  //     params.limit = 4;
-  //     params.page = 1;
+  React.useEffect(() => {
+    debugger;
+    if (!searchParams.toString()) {
+      const params = {};
+      params.order = "desc";
+      params.sortBy = "rating";
+      params.limit = 4;
+      params.page = 1;
 
-  //     setSearchParams(params);
-  //   }
-  //   console.log("useEffect without dependences");
-  // }, []);
+      setSearchParams(params);
+    }
+    console.log("useEffect without dependences");
+  }, []);
 
   React.useEffect(() => {
     setIsLoading(true);
