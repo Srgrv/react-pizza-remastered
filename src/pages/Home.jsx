@@ -555,6 +555,27 @@ const Home = ({ searchParams, setSearchParams }) => {
 
     url.search = searchParams.toString();
     axios.get(url, config).then((res) => {
+      if (activeSort.sort === "price") {
+        let sortPizza = res.data.sort((a, b) => {
+          let a1 = a.types[0].sizes[0].price;
+          let b1 = b.types[0].sizes[0].price;
+          if (direction) {
+            if (a1 > b1) {
+              return 1;
+            } else {
+              return -1;
+            }
+          } else {
+            if (a1 < b1) {
+              return 1;
+            } else {
+              return -1;
+            }
+          }
+        });
+        setPizzas(sortPizza);
+        setIsLoading(false);
+      }
       setPizzas(res.data);
       setIsLoading(false);
     });
@@ -565,7 +586,7 @@ const Home = ({ searchParams, setSearchParams }) => {
     // activeSort,
     // currentPage,
     // searchValue,
-    // direction,
+    direction,
     // pizzasPerPage,
     // value,
 
