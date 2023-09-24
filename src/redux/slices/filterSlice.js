@@ -45,13 +45,30 @@ const filterSlice = createSlice({
       state.value = action.payload;
     },
     SET_FILTERS(state, action) {
-      state.activeCategory = action.payload.activeCategory;
-      state.activeSort.sort = action.payload.sort;
-      state.currentPage = action.payload.currentPage;
-      state.searchValue = action.payload.searchValue;
-      state.direction = action.payload.direction;
-      state.pizzasPerPage = action.payload.pizzasPerPage;
-      state.value = action.payload.value;
+      debugger;
+      if (action.payload.category !== undefined) {
+        state.activeCategory = action.payload.category;
+      }
+      if (action.payload.sortBy !== undefined) {
+        state.activeSort = action.payload.sortBy;
+      }
+      if (action.payload.page !== undefined) {
+        state.currentPage = action.payload.page;
+      }
+      if (action.payload.search !== undefined) {
+        state.searchValue = action.payload.search;
+      }
+      if (action.payload.order !== undefined) {
+        if (action.payload.order === "desc") {
+          state.direction = true;
+        }
+        if (action.payload.order === "asc") {
+          state.direction = false;
+        }
+      }
+
+      // state.pizzasPerPage = action.payload.pizzasPerPage;
+      // state.value = action.payload.value;
     },
   },
 });
