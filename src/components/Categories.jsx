@@ -10,6 +10,7 @@ const categories = [
 ];
 
 const Categories = ({ activeCategory, setActiveCategory }) => {
+  debugger;
   return (
     <div className="categories">
       <ul>
@@ -17,7 +18,9 @@ const Categories = ({ activeCategory, setActiveCategory }) => {
           return (
             <li
               key={`${index}_${item}`}
-              onClick={() => setActiveCategory(index)}
+              onClick={() => {
+                setActiveCategory(index);
+              }}
               className={activeCategory === index ? "active" : ""}
             >
               {item}
