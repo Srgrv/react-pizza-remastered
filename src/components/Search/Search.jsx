@@ -32,55 +32,55 @@ const Search = ({ setSearchParams }) => {
     dispatch(SET_VALUE(value));
   };
 
-  const createParams = (
-    sortBy = activeSort.sort,
-    category = activeCategory,
-    limit = pizzasPerPage,
-    page = currentPage,
-    search = searchValue,
-    order = direction ? "desc" : "asc"
-  ) => {
-    const params = {};
+  // const createParams = (
+  //   sortBy = activeSort.sort,
+  //   category = activeCategory,
+  //   limit = pizzasPerPage,
+  //   page = currentPage,
+  //   search = searchValue,
+  //   order = direction ? "desc" : "asc"
+  // ) => {
+  //   const params = {};
 
-    //search
-    if (search && sortBy !== "price") {
-      dispatch(SET_ACTIVE_CATEGORY(0));
-      params.search = search;
-      params.sortBy = sortBy;
-      params.order = order;
-      params.limit = limit;
-      params.page = page;
-    } else if (search && sortBy === "price") {
-      dispatch(SET_ACTIVE_CATEGORY(0));
-      params.search = search;
-      params.order = order;
-      params.limit = limit;
-      params.page = page;
-    } else if (!search && sortBy !== "price") {
-      dispatch(SET_ACTIVE_CATEGORY(0));
-      params.order = order;
-      params.limit = limit;
-      params.page = page;
-      params.sortBy = sortBy;
-    } else if (!search && sortBy === "price") {
-      dispatch(SET_ACTIVE_CATEGORY(0));
-      params.order = order;
-      params.limit = limit;
-      params.page = page;
-    }
+  //   //search
+  //   if (search && sortBy !== "price") {
+  //     dispatch(SET_ACTIVE_CATEGORY(0));
+  //     params.search = search;
+  //     params.sortBy = sortBy;
+  //     params.order = order;
+  //     params.limit = limit;
+  //     params.page = page;
+  //   } else if (search && sortBy === "price") {
+  //     dispatch(SET_ACTIVE_CATEGORY(0));
+  //     params.search = search;
+  //     params.order = order;
+  //     params.limit = limit;
+  //     params.page = page;
+  //   } else if (!search && sortBy !== "price") {
+  //     dispatch(SET_ACTIVE_CATEGORY(0));
+  //     params.order = order;
+  //     params.limit = limit;
+  //     params.page = page;
+  //     params.sortBy = sortBy;
+  //   } else if (!search && sortBy === "price") {
+  //     dispatch(SET_ACTIVE_CATEGORY(0));
+  //     params.order = order;
+  //     params.limit = limit;
+  //     params.page = page;
+  //   }
 
-    setSearchParams(params);
-  };
+  //   setSearchParams(params);
+  // };
 
   const setSearchValue = (searchValue) => {
     dispatch(SET_SEARCH_VALUE(searchValue));
-    createParams(
-      activeSort.sort,
-      activeCategory,
-      pizzasPerPage,
-      currentPage,
-      searchValue
-    );
+    // createParams(
+    //   activeSort.sort,
+    //   activeCategory,
+    //   pizzasPerPage,
+    //   currentPage,
+    //   searchValue
+    // );
   };
 
   // const [value, setValue] = React.useState("");
