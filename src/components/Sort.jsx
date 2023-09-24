@@ -6,6 +6,12 @@ import { useRef } from "react";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 
+export const list = [
+  { name: "популярности", sort: "rating" },
+  { name: "цене", sort: "price" },
+  { name: "алфавиту", sort: "title" },
+];
+
 const Sort = ({ direction, setDirection, setActiveSort }) => {
   const { activeSort } = useSelector((state) => state.filter);
   const [visible, setVisible] = React.useState(false);
@@ -21,12 +27,6 @@ const Sort = ({ direction, setDirection, setActiveSort }) => {
     setActiveSort({ name, sort });
     setVisible(false);
   };
-
-  const list = [
-    { name: "популярности", sort: "rating" },
-    { name: "цене", sort: "price" },
-    { name: "алфавиту", sort: "title" },
-  ];
 
   const handleOutsideClick = (e) => {
     if (!e.composedPath().includes(sortRef.current)) {
