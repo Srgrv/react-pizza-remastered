@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import qs from "qs";
+import { useRef } from "react";
 
 //components
 import PizzaBlock from "../components/PizzaBlock";
@@ -8,6 +11,9 @@ import Categories from "../components/Categories";
 import Skeleton from "../components/Skeleton";
 import Sort from "../components/Sort";
 import Pagination from "../components/Pagination/Pagination";
+
+//list
+import { list } from "../components/Sort";
 
 //reducers
 import {
@@ -22,6 +28,7 @@ import {
 import { SET_PIZZAS, SET_IS_LOADING } from "../redux/slices/pizzasSlice";
 
 const Home = ({ searchParams, setSearchParams }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     activeCategory,
@@ -33,6 +40,10 @@ const Home = ({ searchParams, setSearchParams }) => {
     value,
   } = useSelector((state) => state.filter);
   const { pizzas, isLoading } = useSelector((state) => state.pizzas);
+
+  const useSearch = useRef(false);
+  const useYes = useRef(false);
+  const useMounted = useRef(false);
 
   const setPizzas = (pizzas) => {
     dispatch(SET_PIZZAS(pizzas));
@@ -46,514 +57,164 @@ const Home = ({ searchParams, setSearchParams }) => {
       })
     );
 
-    const params = {};
-    const order = direction ? "desc" : "asc";
-    debugger;
-    if (activeCategory === 0 && sort === "price" && searchValue) {
-      // debugger;
-      params.search = searchValue;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (activeCategory === 0 && sort !== "price" && searchValue) {
-      // debugger;
-      params.search = searchValue;
-      params.sortBy = sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-      // } else if (activeCategory > 0 && sort === "price" && searchValue) {
-      //   debugger;
-      //   dispatch(SET_ACTIVE_CATEGORY(0));
-      //   params.search = searchValue;
-      //   params.order = order;
-      //   params.limit = pizzasPerPage;
-      //   params.page = 1;
-      // } else if (activeCategory > 0 && sort !== "price" && searchValue) {
-      //   debugger;
-      //   dispatch(SET_ACTIVE_CATEGORY(0));
-      //   params.sortBy = sort;
-      //   params.search = searchValue;
-      //   params.order = order;
-      //   params.limit = pizzasPerPage;
-      //   params.page = 1;
-    } else if (activeCategory === 0 && sort === "price" && !searchValue) {
-      // debugger;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (activeCategory === 0 && sort !== "price" && !searchValue) {
-      // debugger;
-      params.sortBy = sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (activeCategory > 0 && sort === "price" && !searchValue) {
-      // debugger;
-      params.category = activeCategory;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (activeCategory > 0 && sort !== "price" && !searchValue) {
-      // debugger;
-      params.category = activeCategory;
-      params.sortBy = sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    }
-    setSearchParams(params);
+    //debuger;
   };
 
   const setActiveCategory = (category) => {
     dispatch(SET_ACTIVE_CATEGORY(category));
-
-    const params = {};
-    const order = direction ? "desc" : "asc";
-    //category
-    if (category === 0 && activeSort.sort !== "price" && !searchValue) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      params.order = order;
-      params.sortBy = activeSort.sort;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category === 0 && activeSort.sort === "price" && !searchValue) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category > 0 && activeSort.sort !== "price" && !searchValue) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      params.category = category;
-      params.sortBy = activeSort.sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category > 0 && activeSort.sort === "price" && !searchValue) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      params.category = category;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category > 0 && activeSort.sort === "price" && searchValue) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = category;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category > 0 && activeSort.sort !== "price" && searchValue) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = category;
-      params.sortBy = activeSort.sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category === 0 && activeSort.sort === "price" && searchValue) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category === 0 && activeSort.sort !== "price" && searchValue) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.sortBy = activeSort.sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    }
-    setSearchParams(params);
   };
 
-  const setCurrentPage = (numberPage) => {
-    dispatch(SET_CURRENT_PAGE(numberPage));
+  const setCurrentPage = (current) => {
     debugger;
-    // const order = direction ? "desc" : "asc";
-    // if (activeCategory === 0 && activeSort.sort === "price") {
-    //   params.order = order;
-    //   params.limit = pizzasPerPage;
-    //   params.page = numberPage;
-    // } else if (activeCategory === 0 && activeCategory.sort !== "price") {
-    //   params.sortBy = activeSort.sort;
-    //   params.order = order;
-    //   params.limit = pizzasPerPage;
-    //   params.page = numberPage;
-    // }
-    // setSearchParams(params);
+    dispatch(SET_CURRENT_PAGE(current));
   };
 
   const setDirection = (direction) => {
     dispatch(SET_DIRECTION(direction));
-    const params = {};
-    const order = direction ? "desc" : "asc";
-
-    if (activeCategory === 0 && activeSort.sort !== "price" && !searchValue) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      params.order = order;
-      params.sortBy = activeSort.sort;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory === 0 &&
-      activeSort.sort === "price" &&
-      !searchValue
-    ) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory > 0 &&
-      activeSort.sort !== "price" &&
-      !searchValue
-    ) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      params.category = activeCategory;
-      params.sortBy = activeSort.sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory > 0 &&
-      activeSort.sort === "price" &&
-      !searchValue
-    ) {
-      // debugger;
-      dispatch(SET_CURRENT_PAGE(1));
-      params.category = activeCategory;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory > 0 &&
-      activeSort.sort === "price" &&
-      searchValue
-    ) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = activeCategory;
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory > 0 &&
-      activeSort.sort !== "price" &&
-      searchValue
-    ) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = activeCategory;
-      params.sortBy = activeSort.sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory === 0 &&
-      activeSort.sort === "price" &&
-      searchValue
-    ) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      // params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (
-      activeCategory === 0 &&
-      activeSort.sort !== "price" &&
-      searchValue
-    ) {
-      // debugger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.sortBy = activeSort.sort;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    }
-    setSearchParams(params);
   };
 
   const setIsLoading = (isLoading) => {
     dispatch(SET_IS_LOADING(isLoading));
   };
 
-  const createParams = (
-    sortBy = activeSort.sort,
-    category = activeCategory,
-    limit = pizzasPerPage,
-    page = currentPage,
-    search = searchValue,
-    order = direction ? "desc" : "asc"
-  ) => {
-    const params = {};
-    debugger;
-    //category
-    if (category === 0 && sortBy !== "price" && !search) {
-      dispatch(SET_CURRENT_PAGE(1));
-      params.order = order;
-      params.sortBy = sortBy;
-      params.limit = limit;
-      params.page = 1;
-    } else if (category === 0 && sortBy === "price" && !search) {
-      dispatch(SET_CURRENT_PAGE(1));
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category > 0 && sortBy !== "price" && !search) {
-      dispatch(SET_CURRENT_PAGE(1));
-      params.category = category;
-      params.sortBy = sortBy;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    } else if (category > 0 && sortBy === "price" && !search) {
-      dispatch(SET_CURRENT_PAGE(1));
-      params.category = category;
-      params.order = order;
-      params.limit = pizzasPerPage;
-      params.page = 1;
-    }
-
-    if (sortBy !== "price" && search) {
-      params.search = searchValue;
-      params.sortBy = sortBy;
-      params.order = order;
-      params.limit = limit;
-      params.page = 1;
-    } else if (sortBy === "price" && search) {
-      params.search = searchValue;
-      params.order = order;
-      params.limit = limit;
-      params.page = 1;
-    } else if (category > 0 && sortBy === "price" && search) {
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = category;
-      params.order = order;
-      params.limit = limit;
-      params.page = 1;
-    } else if (category > 0 && sortBy !== "price" && search) {
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = category;
-      params.sortBy = sortBy;
-      params.order = order;
-      params.limit = limit;
-      params.page = 1;
-    } else if (category === 0 && sortBy === "price" && search) {
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.order = order;
-      params.limit = limit;
-      params.page = 1;
-    } else if (category === 0 && sortBy !== "price" && search) {
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.sortBy = sortBy;
-      params.order = order;
-      params.limit = limit;
-      params.page = 1;
-    }
-
-    setSearchParams(params);
-  };
-
-  // React.useEffect(() => {
-  //   const params = {};
-  //   for (let [key, item] of searchParams.entries()) {
-  //     params[key] = item;
-  //   }
-  //   dispatch(SET_FILTERS(params));
-  // }, []);
-
-  // React.useEffect(() => {
-  //   debugger;
-  //   const params = {};
-  //   const order = direction ? "desc" : "asc";
-  //   //category
-  //   if (activeCategory === 0 && activeSort.sort !== "price" && !searchValue) {
-  //     // debugger;
-  //     dispatch(SET_CURRENT_PAGE(1));
-  //     params.order = order;
-  //     params.sortBy = activeSort.sort;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory === 0 &&
-  //     activeSort.sort === "price" &&
-  //     !searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_CURRENT_PAGE(1));
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory > 0 &&
-  //     activeSort.sort !== "price" &&
-  //     !searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_CURRENT_PAGE(1));
-  //     params.category = activeCategory;
-  //     params.sortBy = activeSort.sort;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory > 0 &&
-  //     activeSort.sort === "price" &&
-  //     !searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_CURRENT_PAGE(1));
-  //     params.category = activeCategory;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory > 0 &&
-  //     activeSort.sort === "price" &&
-  //     searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_SEARCH_VALUE(""));
-  //     dispatch(SET_VALUE(""));
-  //     params.category = activeCategory;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory > 0 &&
-  //     activeSort.sort !== "price" &&
-  //     searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_SEARCH_VALUE(""));
-  //     dispatch(SET_VALUE(""));
-  //     params.category = activeCategory;
-  //     params.sortBy = activeSort.sort;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory === 0 &&
-  //     activeSort.sort === "price" &&
-  //     searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_SEARCH_VALUE(""));
-  //     dispatch(SET_VALUE(""));
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   } else if (
-  //     activeCategory === 0 &&
-  //     activeSort.sort !== "price" &&
-  //     searchValue
-  //   ) {
-  //     // debugger;
-  //     dispatch(SET_SEARCH_VALUE(""));
-  //     dispatch(SET_VALUE(""));
-  //     params.sortBy = activeSort.sort;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = 1;
-  //   }
-  //   //sort
-  //   if (activeCategory === 0 && activeSort.sort === "price") {
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = currentPage;
-  //   } else if (activeCategory === 0 && activeCategory.sort !== "price") {
-  //     params.sortBy = activeSort.sort;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = currentPage;
-  //   }
-  //   //search
-  //   if (searchValue && activeCategory.sort !== "price") {
-  //     dispatch(SET_ACTIVE_CATEGORY(0));
-  //     params.search = searchValue;
-  //     params.sortBy = activeCategory.sort;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = currentPage;
-  //   } else if (searchValue && activeCategory.sort === "price") {
-  //     dispatch(SET_ACTIVE_CATEGORY(0));
-  //     params.search = searchValue;
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = currentPage;
-  //   } else if (!searchValue && activeCategory.sort !== "price") {
-  //     dispatch(SET_ACTIVE_CATEGORY(0));
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = currentPage;
-  //     params.sortBy = activeCategory.sort;
-  //   } else if (!searchValue && activeCategory.sort === "price") {
-  //     dispatch(SET_ACTIVE_CATEGORY(0));
-  //     params.order = order;
-  //     params.limit = pizzasPerPage;
-  //     params.page = currentPage;
-  //   }
-  //   setSearchParams(params);
-  // }, [
-  //   activeCategory,
-  //   activeSort,
-  //   currentPage,
-  //   searchValue,
-  //   direction,
-  //   pizzasPerPage,
-  //   value,
-  // ]);
-
-  console.log("render home");
-
-  React.useEffect(() => {
-    debugger;
-    if (!searchParams.toString()) {
-      const params = {};
-      params.order = "desc";
-      params.sortBy = "rating";
-      params.limit = 4;
-      params.page = 1;
-
-      setSearchParams(params);
-    }
-    console.log("useEffect without dependences");
-  }, []);
-
-  React.useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true);
+    debugger;
+    // const url = new URL(`https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas`);
+    const url = new URL(
+      `https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas/?order=desc&sortBy=rating&limit=4&page=1`
+    );
 
-    const url = new URL(`https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas`);
+    const params = {};
+    const order = direction ? "desc" : "asc";
+
+    if (activeCategory === 0 && activeSort.sort !== "price" && !searchValue) {
+      //1
+      //debuger;
+      // dispatch(SET_CURRENT_PAGE(1));
+      params.order = order;
+      params.sortBy = activeSort.sort;
+      params.limit = pizzasPerPage;
+      params.page = currentPage;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort === "price" &&
+      !searchValue
+    ) {
+      //2
+      //debuger;
+      // dispatch(SET_CURRENT_PAGE(1));
+      params.limit = pizzasPerPage;
+      params.page = currentPage;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort !== "price" &&
+      !searchValue
+    ) {
+      //3
+      //debuger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.category = activeCategory;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort === "price" &&
+      !searchValue
+    ) {
+      // 4
+      //debuger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.category = activeCategory;
+
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort === "price" &&
+      searchValue
+    ) {
+      // 5
+      //debuger;
+      dispatch(SET_SEARCH_VALUE(""));
+      dispatch(SET_VALUE(""));
+      params.category = activeCategory;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort !== "price" &&
+      searchValue
+    ) {
+      // 6
+      //debuger;
+      dispatch(SET_SEARCH_VALUE(""));
+      dispatch(SET_VALUE(""));
+      params.category = activeCategory;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort === "price" &&
+      searchValue
+    ) {
+      // 7
+      //debuger;
+      // dispatch(SET_SEARCH_VALUE(""));
+      // dispatch(SET_VALUE(""));
+      params.search = searchValue;
+      params.limit = pizzasPerPage;
+      params.page = currentPage;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort !== "price" &&
+      searchValue
+    ) {
+      // 8
+      //debuger;
+      // dispatch(SET_SEARCH_VALUE(""));
+      // dispatch(SET_VALUE(""));
+      params.search = searchValue;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      // params.limit = pizzasPerPage;
+      // params.page = currentPage;
+    }
+
+    // if (useSearch.current) {
+    //   const params = {
+    //     sortBy: "rating",
+    //     order: "desc",
+    //     limit: 4,
+    //     page: 1,
+    //   };
+
+    //   const queryString = qs.stringify(params);
+
+    //   // navigate(`?${queryString}`);
+    const queries = new URLSearchParams(params);
+    url.search = queries.toString();
+    // }
+
     const config = {
       method: "GET",
       headers: { "content-type": "application/json" },
     };
 
-    // console.log(
-    //   searchParams.toString() === "order=desc&sortBy=rating&limit=4&page=1"
-    // );
+    // if (useMounted.current) {
+    //   setSearchParams(params);
+    //   const queries = new URLSearchParams(params);
+    //   url.search = queries.toString();
+    // }
 
-    url.search = searchParams.toString();
+    // useMounted.current = true;
+
+    // url.search = searchParams.toString();
+
     axios.get(url, config).then((res) => {
       if (activeSort.sort === "price") {
         let sortPizza = res.data.sort((a, b) => {
@@ -579,18 +240,157 @@ const Home = ({ searchParams, setSearchParams }) => {
       setPizzas(res.data);
       setIsLoading(false);
     });
-    console.log("useEffect with dependencies");
+  };
+
+  React.useEffect(() => {
+    debugger;
+    if (useMounted.current) {
+      const params = {};
+      const order = direction ? "desc" : "asc";
+
+      if (activeCategory === 0 && activeSort.sort !== "price" && !searchValue) {
+        //1
+        //debuger;
+        // dispatch(SET_CURRENT_PAGE(1));
+        params.order = order;
+        params.sortBy = activeSort.sort;
+        params.limit = pizzasPerPage;
+        params.page = currentPage;
+      } else if (
+        activeCategory === 0 &&
+        activeSort.sort === "price" &&
+        !searchValue
+      ) {
+        //2
+        //debuger;
+        // dispatch(SET_CURRENT_PAGE(1));
+        params.limit = pizzasPerPage;
+        params.page = currentPage;
+      } else if (
+        activeCategory > 0 &&
+        activeSort.sort !== "price" &&
+        !searchValue
+      ) {
+        //3
+        //debuger;
+        dispatch(SET_CURRENT_PAGE(1));
+        params.category = activeCategory;
+        params.sortBy = activeSort.sort;
+        params.order = order;
+        params.limit = pizzasPerPage;
+        params.page = 1;
+      } else if (
+        activeCategory > 0 &&
+        activeSort.sort === "price" &&
+        !searchValue
+      ) {
+        // 4
+        //debuger;
+        dispatch(SET_CURRENT_PAGE(1));
+        params.category = activeCategory;
+
+        params.limit = pizzasPerPage;
+        params.page = 1;
+      } else if (
+        activeCategory > 0 &&
+        activeSort.sort === "price" &&
+        searchValue
+      ) {
+        // 5
+        //debuger;
+        dispatch(SET_SEARCH_VALUE(""));
+        dispatch(SET_VALUE(""));
+        params.category = activeCategory;
+        params.limit = pizzasPerPage;
+        params.page = 1;
+      } else if (
+        activeCategory > 0 &&
+        activeSort.sort !== "price" &&
+        searchValue
+      ) {
+        // 6
+        //debuger;
+        dispatch(SET_SEARCH_VALUE(""));
+        dispatch(SET_VALUE(""));
+        params.category = activeCategory;
+        params.sortBy = activeSort.sort;
+        params.order = order;
+        params.limit = pizzasPerPage;
+        params.page = 1;
+      } else if (
+        activeCategory === 0 &&
+        activeSort.sort === "price" &&
+        searchValue
+      ) {
+        // 7
+        //debuger;
+        // dispatch(SET_SEARCH_VALUE(""));
+        // dispatch(SET_VALUE(""));
+        params.search = searchValue;
+        params.limit = pizzasPerPage;
+        params.page = currentPage;
+      } else if (
+        activeCategory === 0 &&
+        activeSort.sort !== "price" &&
+        searchValue
+      ) {
+        // 8
+        //debuger;
+        // dispatch(SET_SEARCH_VALUE(""));
+        // dispatch(SET_VALUE(""));
+        params.search = searchValue;
+        params.sortBy = activeSort.sort;
+        params.order = order;
+        // params.limit = pizzasPerPage;
+        // params.page = currentPage;
+      }
+
+      const queryString = qs.stringify(params);
+
+      navigate(`?${queryString}`);
+    }
+    useMounted.current = true;
+  }, [
+    activeCategory,
+    activeSort,
+    currentPage,
+    searchValue,
+    direction,
+    pizzasPerPage,
+    value,
+  ]);
+
+  React.useEffect(() => {
+    debugger;
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      console.log(params);
+      const sortBy = list.find((obj) => obj.sort === params.sortBy);
+      const d = { ...params, sortBy };
+      dispatch(SET_FILTERS(d));
+      useSearch.current = true;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    debugger;
+    if (!useSearch.current) {
+      fetchPizzas();
+    }
+
+    useSearch.current = false;
     // eslint-disable-next-line
   }, [
-    // activeCategory,
-    // activeSort,
-    // currentPage,
-    // searchValue,
+    activeCategory,
+    activeSort,
+    currentPage,
+    searchValue,
     direction,
-    // pizzasPerPage,
-    // value,
+    pizzasPerPage,
+    value,
 
-    searchParams,
+    // searchParams,
   ]);
 
   return (
@@ -607,12 +407,7 @@ const Home = ({ searchParams, setSearchParams }) => {
         />
       </div>
       {!searchValue && activeCategory === 0 && (
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={(numberPage) => {
-            dispatch(SET_CURRENT_PAGE(numberPage));
-          }}
-        />
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
 
       <h2 className="content__title">Все пиццы</h2>
@@ -631,7 +426,7 @@ const Home = ({ searchParams, setSearchParams }) => {
             })}
       </div>
 
-      {!searchValue && activeCategory === 0 && (
+      {!searchValue && activeCategory === 0 && pizzas.length === 0 && (
         <Pagination
           // pageQty={pageNumber.length}
           currentPage={currentPage}
@@ -647,6 +442,8 @@ export default Home;
 //Столкнулся с проблемой mockApi - если я добавляю еще search в url params, то поиск вообще не работает.Решил это следующим образом - оставил фильтрацию на фронтенде, но при начале поиска перевожу вручную категорию на Все пиццы. Таким образом делается всего 1 запрос на бек (в будущем не нужно будет даже дебаунсить все это), но фильтрация выдает нужные результаты еще и с сортировкой. Мне решение понравилось, мб будет кому-то еще полезно.
 
 //сначала срабатывает useEffect, который запрашивает запрос на сервер исходя из тех данных которые находятся в state
+//qs (парсит и может генерировать)
+//useSearchParams (парсит и может перезаписывать)
 
 //далее, создается еще один useEffect с теми же зависимостями как у первого, где самостоятельно создается строка с get-параметры запроса и вставляется в useNavigate
 
