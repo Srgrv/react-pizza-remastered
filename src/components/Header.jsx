@@ -11,10 +11,7 @@ const Header = ({ setSearchParams }) => {
   return (
     <div className="header">
       <div className="container">
-        <Link
-          to="/?order=desc&sortBy=rating&limit=4&page=1"
-          className="header__logo"
-        >
+        <Link to="/" className="header__logo">
           <img width="38" src={logoSvg} alt="Pizza logo" />
           <div>
             <h1>React Pizza</h1>
