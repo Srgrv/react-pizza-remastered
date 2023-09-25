@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -21,13 +21,15 @@ import {
   SET_CURRENT_PAGE,
   SET_ACTIVE_SORT,
   SET_DIRECTION,
-  SET_SEARCH_VALUE,
-  SET_VALUE,
+  // SET_SEARCH_VALUE,
+  // SET_VALUE,
   SET_FILTERS,
 } from "../redux/slices/filterSlice";
 import { SET_PIZZAS, SET_IS_LOADING } from "../redux/slices/pizzasSlice";
 
-const Home = ({ searchParams, setSearchParams }) => {
+const Home = () => {
+  debugger;
+  //render
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -138,9 +140,11 @@ const Home = ({ searchParams, setSearchParams }) => {
     ) {
       // 5
       //debuger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = activeCategory;
+      // dispatch(SET_SEARCH_VALUE(""));
+      // dispatch(SET_VALUE(""));
+      dispatch(SET_ACTIVE_CATEGORY(0));
+      params.search = searchValue;
+      // params.category = activeCategory;
       params.limit = pizzasPerPage;
       params.page = 1;
     } else if (
@@ -150,9 +154,11 @@ const Home = ({ searchParams, setSearchParams }) => {
     ) {
       // 6
       //debuger;
-      dispatch(SET_SEARCH_VALUE(""));
-      dispatch(SET_VALUE(""));
-      params.category = activeCategory;
+      // dispatch(SET_SEARCH_VALUE(""));
+      // dispatch(SET_VALUE(""));
+      // params.category = activeCategory;
+      dispatch(SET_ACTIVE_CATEGORY(0));
+      params.search = searchValue;
       params.sortBy = activeSort.sort;
       params.order = order;
       params.limit = pizzasPerPage;
@@ -244,6 +250,7 @@ const Home = ({ searchParams, setSearchParams }) => {
 
   React.useEffect(() => {
     debugger;
+    //первый useEffect
     if (useMounted.current) {
       const params = {};
       const order = direction ? "desc" : "asc";
@@ -298,9 +305,11 @@ const Home = ({ searchParams, setSearchParams }) => {
       ) {
         // 5
         //debuger;
-        dispatch(SET_SEARCH_VALUE(""));
-        dispatch(SET_VALUE(""));
-        params.category = activeCategory;
+        // dispatch(SET_SEARCH_VALUE(""));
+        // dispatch(SET_VALUE(""));
+        dispatch(SET_ACTIVE_CATEGORY(0));
+        params.search = searchValue;
+        // params.category = activeCategory;
         params.limit = pizzasPerPage;
         params.page = 1;
       } else if (
@@ -310,9 +319,11 @@ const Home = ({ searchParams, setSearchParams }) => {
       ) {
         // 6
         //debuger;
-        dispatch(SET_SEARCH_VALUE(""));
-        dispatch(SET_VALUE(""));
-        params.category = activeCategory;
+        // dispatch(SET_SEARCH_VALUE(""));
+        // dispatch(SET_VALUE(""));
+        // params.category = activeCategory;
+        dispatch(SET_ACTIVE_CATEGORY(0));
+        params.search = searchValue;
         params.sortBy = activeSort.sort;
         params.order = order;
         params.limit = pizzasPerPage;
@@ -350,7 +361,9 @@ const Home = ({ searchParams, setSearchParams }) => {
       navigate(`?${queryString}`);
     }
     useMounted.current = true;
+    useYes.current = true;
   }, [
+    dispatch,
     activeCategory,
     activeSort,
     currentPage,
@@ -362,6 +375,7 @@ const Home = ({ searchParams, setSearchParams }) => {
 
   React.useEffect(() => {
     debugger;
+    // второй useEffect
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
 
@@ -375,11 +389,13 @@ const Home = ({ searchParams, setSearchParams }) => {
 
   React.useEffect(() => {
     debugger;
+    // третий useEffect
     if (!useSearch.current) {
       fetchPizzas();
     }
 
     useSearch.current = false;
+    useYes.current = false;
     // eslint-disable-next-line
   }, [
     activeCategory,
