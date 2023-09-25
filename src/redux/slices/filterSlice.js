@@ -25,6 +25,10 @@ const filterSlice = createSlice({
   reducers: {
     SET_ACTIVE_CATEGORY(state, action) {
       state.activeCategory = action.payload;
+      if (state.activeCategory !== 0) {
+        state.value = "";
+        state.searchValue = "";
+      }
     },
     SET_ACTIVE_SORT(state, action) {
       state.activeSort = {
