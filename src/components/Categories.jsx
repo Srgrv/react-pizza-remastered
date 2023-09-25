@@ -10,7 +10,6 @@ const categories = [
 ];
 
 const Categories = ({ activeCategory, setActiveCategory }) => {
-  debugger;
   return (
     <div className="categories">
       <ul>
