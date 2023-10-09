@@ -1,6 +1,31 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
-const PizzaCart = () => {
+//reducers
+import {
+  REMOVE_ITEM,
+  ADD_ITEM,
+  DELETE_ITEMS,
+} from "../redux/slices/pizzasSlice";
+
+const PizzaCart = ({ id, title, type, imageUrl, size, count, price }) => {
+  debugger;
+
+  const dispatch = useDispatch();
+
+  const addItem = () => {
+    let obj = {
+      id,
+      title,
+      imageUrl,
+      price,
+      type,
+      size,
+    };
+    dispatch(ADD_ITEM(obj));
+  };
+
+  debugger;
   return (
     <div className="cart__item">
       <div className="cart__item-img">
@@ -11,11 +36,16 @@ const PizzaCart = () => {
         />
       </div>
       <div className="cart__item-info">
-        <h3>Сырный цыпленок</h3>
-        <p>тонкое тесто, 26 см.</p>
+        <h3>{title}</h3>
+        <p>
+          {type[1]} тесто, {size[1]} см.
+        </p>
       </div>
       <div className="cart__item-count">
-        <div className="button button--outline button--circle cart__item-count-minus">
+        <div
+          className="button button--outline button--circle cart__item-count-minus"
+          onClick={() => dispatch(REMOVE_ITEM({ id, size, type }))}
+        >
           <svg
             width="10"
             height="10"
@@ -33,8 +63,11 @@ const PizzaCart = () => {
             />
           </svg>
         </div>
-        <b>2</b>
-        <div className="button button--outline button--circle cart__item-count-plus">
+        <b>{count}</b>
+        <div
+          className="button button--outline button--circle cart__item-count-plus"
+          onClick={addItem}
+        >
           <svg
             width="10"
             height="10"
@@ -54,9 +87,12 @@ const PizzaCart = () => {
         </div>
       </div>
       <div className="cart__item-price">
-        <b>770 ₽</b>
+        <b>{price[1]} ₽</b>
       </div>
-      <div className="cart__item-remove">
+      <div
+        className="cart__item-remove"
+        onClick={() => dispatch(DELETE_ITEMS({ id, type, size }))}
+      >
         <div className="button button--outline button--circle">
           <svg
             width="10"
