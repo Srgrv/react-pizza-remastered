@@ -36,6 +36,10 @@ const Sort = ({ direction, setDirection, setActiveSort }) => {
 
   React.useEffect(() => {
     document.body.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.body.removeEventListener("click", handleOutsideClick);
+    };
   }, []);
 
   return (
