@@ -1,10 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 //components
 import PizzaCart from "../components/PizzaCart";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
+  const { totalPrice, totalCount, items } = useSelector(
+    (state) => state.pizzas
+  );
+
   return (
     <div className="container container--cart">
       <div className="cart">
@@ -82,18 +87,29 @@ const Cart = () => {
             <span>Очистить корзину</span>
           </div>
         </div>
-        <div className="content__pizza">
-          <PizzaCart />
-        </div>
+        {items.map((id) => {
+          debugger;
+          return id.types.map((types) => {
+            return types.sizes.map((item) => {
+              debugger;
+              return (
+                <div className="content__pizza" key={item.item.id}>
+                  <PizzaCart {...item.item} />
+                </div>
+              );
+            });
+          });
+        })}
+
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
               {" "}
-              Всего пицц: <b>3 шт.</b>{" "}
+              Всего пицц: <b>{totalCount} шт.</b>{" "}
             </span>
             <span>
               {" "}
-              Сумма заказа: <b>900 ₽</b>{" "}
+              Сумма заказа: <b>{totalPrice} ₽</b>{" "}
             </span>
           </div>
           <div className="cart__bottom-buttons">
