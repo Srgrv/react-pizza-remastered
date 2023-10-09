@@ -49,7 +49,6 @@ const filterSlice = createSlice({
       state.value = action.payload;
     },
     SET_FILTERS(state, action) {
-      debugger;
       if (action.payload.category !== undefined) {
         state.activeCategory = action.payload.category;
       }
