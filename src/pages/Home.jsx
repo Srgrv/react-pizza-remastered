@@ -28,7 +28,6 @@ import {
 import { SET_PIZZAS, SET_IS_LOADING } from "../redux/slices/pizzasSlice";
 
 const Home = () => {
-  debugger;
   //render
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -67,7 +66,6 @@ const Home = () => {
   };
 
   const setCurrentPage = (current) => {
-    debugger;
     dispatch(SET_CURRENT_PAGE(current));
   };
 
@@ -81,7 +79,7 @@ const Home = () => {
 
   const fetchPizzas = () => {
     setIsLoading(true);
-    debugger;
+
     // const url = new URL(`https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas`);
     const url = new URL(
       `https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas/?order=desc&sortBy=rating&limit=4&page=1`
@@ -249,7 +247,6 @@ const Home = () => {
   };
 
   React.useEffect(() => {
-    debugger;
     //первый useEffect
     if (useMounted.current) {
       const params = {};
@@ -363,7 +360,6 @@ const Home = () => {
     useMounted.current = true;
     useYes.current = true;
   }, [
-    dispatch,
     activeCategory,
     activeSort,
     currentPage,
@@ -371,10 +367,11 @@ const Home = () => {
     direction,
     pizzasPerPage,
     value,
+    navigate,
+    dispatch,
   ]);
 
   React.useEffect(() => {
-    debugger;
     // второй useEffect
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
@@ -385,10 +382,9 @@ const Home = () => {
       dispatch(SET_FILTERS(d));
       useSearch.current = true;
     }
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
-    debugger;
     // третий useEffect
     if (!useSearch.current) {
       fetchPizzas();
@@ -434,9 +430,10 @@ const Home = () => {
               return (
                 <PizzaBlock
                   key={key.id}
-                  title={key.title}
-                  image={key.imageUrl}
-                  types={key.types}
+                  // title={key.title}
+                  // image={key.imageUrl}
+                  // types={key.types}
+                  {...key}
                 />
               );
             })}
