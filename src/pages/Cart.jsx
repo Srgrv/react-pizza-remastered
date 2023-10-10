@@ -1,11 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //components
 import PizzaCart from "../components/PizzaCart";
 import { Link } from "react-router-dom";
 
+//reducers
+import { CLEAR } from "../redux/slices/pizzasSlice";
+
 const Cart = () => {
+  const dispatch = useDispatch();
+
   const { totalPrice, totalCount, items } = useSelector(
     (state) => state.pizzas
   );
@@ -84,14 +89,12 @@ const Cart = () => {
               />
             </svg>
 
-            <span>Очистить корзину</span>
+            <span onClick={() => dispatch(CLEAR())}>Очистить корзину</span>
           </div>
         </div>
         {items.map((id) => {
-          debugger;
           return id.types.map((types) => {
             return types.sizes.map((item) => {
-              debugger;
               return (
                 <div className="content__pizza" key={item.item.id}>
                   <PizzaCart {...item.item} />
