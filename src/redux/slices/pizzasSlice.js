@@ -1,4 +1,152 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+//reducers
+import { SET_CURRENT_PAGE, SET_ACTIVE_CATEGORY } from "./filterSlice";
+
+export const FETCH_PIZZAS = createAsyncThunk(
+  "pizzas/fetchPizzas",
+  async (props, { rejectWithValue, dispatch }) => {
+    const {
+      direction,
+      activeCategory,
+      activeSort,
+      searchValue,
+      pizzasPerPage,
+      currentPage,
+    } = props;
+
+    const url = new URL(
+      `https://64f5b54f2b07270f705d8ef6.mockapi.io/pizzas/?order=desc&sortBy=rating&limit=4&page=1`
+    );
+
+    const params = {};
+    const order = direction ? "desc" : "asc";
+
+    if (activeCategory === 0 && activeSort.sort !== "price" && !searchValue) {
+      //1
+      //debuger;
+      params.order = order;
+      params.sortBy = activeSort.sort;
+      params.limit = pizzasPerPage;
+      params.page = currentPage;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort === "price" &&
+      !searchValue
+    ) {
+      //2
+      //debuger;
+      params.limit = pizzasPerPage;
+      params.page = currentPage;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort !== "price" &&
+      !searchValue
+    ) {
+      //3
+      //debuger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.category = activeCategory;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort === "price" &&
+      !searchValue
+    ) {
+      // 4
+      //debuger;
+      dispatch(SET_CURRENT_PAGE(1));
+      params.category = activeCategory;
+
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort === "price" &&
+      searchValue
+    ) {
+      // 5
+      //debuger;
+      dispatch(SET_ACTIVE_CATEGORY(0));
+      params.search = searchValue;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory > 0 &&
+      activeSort.sort !== "price" &&
+      searchValue
+    ) {
+      // 6
+      //debuger;
+      dispatch(SET_ACTIVE_CATEGORY(0));
+      params.search = searchValue;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+      params.limit = pizzasPerPage;
+      params.page = 1;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort === "price" &&
+      searchValue
+    ) {
+      // 7
+      //debuger
+      params.search = searchValue;
+      params.limit = pizzasPerPage;
+      params.page = currentPage;
+    } else if (
+      activeCategory === 0 &&
+      activeSort.sort !== "price" &&
+      searchValue
+    ) {
+      // 8
+      //debuger
+      params.search = searchValue;
+      params.sortBy = activeSort.sort;
+      params.order = order;
+    }
+
+    const queries = new URLSearchParams(params);
+    url.search = queries.toString();
+
+    const config = {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    };
+
+    const res = await axios.get(url, config);
+
+    if (activeSort.sort === "price") {
+      let sortPizza = res.data.sort((a, b) => {
+        let a1 = a.types[0].sizes[0].price;
+        let b1 = b.types[0].sizes[0].price;
+        if (direction) {
+          if (a1 > b1) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          if (a1 < b1) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+      });
+      return sortPizza;
+      // setPizzas(sortPizza);
+      // setIsLoading(false);
+    } else {
+      return res.data;
+      // setPizzas(res.data);
+    }
+  }
+);
 
 const pizzasSlice = createSlice({
   name: "pizzas",
@@ -272,39 +420,49 @@ const pizzasSlice = createSlice({
     },
     CLEAR(state) {
       state.items = [];
+      state.totalCount = 0;
+      state.totalPrice = 0;
+      // state.totalPrice = state.items.reduce((a, b) => {
+      //   debugger;
+      //   return (
+      //     a +
+      //     b.types.reduce((a, b) => {
+      //       return (
+      //         a +
+      //         b.sizes.reduce((a, b) => {
+      //           return a + b.item.count * b.item.price[1];
+      //         }, 0)
+      //       );
+      //     }, 0)
+      //   );
+      // }, 0);
 
-      state.totalPrice = state.items.reduce((a, b) => {
-        debugger;
-        return (
-          a +
-          b.types.reduce((a, b) => {
-            return (
-              a +
-              b.sizes.reduce((a, b) => {
-                return a + b.item.count * b.item.price[1];
-              }, 0)
-            );
-          }, 0)
-        );
-      }, 0);
-
-      state.totalCount = state.items.reduce((a, b) => {
-        debugger;
-        return (
-          a +
-          b.types.reduce((a, b) => {
-            return (
-              a +
-              b.sizes.reduce((a, b) => {
-                return a + b.item.count;
-              }, 0)
-            );
-          }, 0)
-        );
-      }, 0);
+      // state.totalCount = state.items.reduce((a, b) => {
+      //   debugger;
+      //   return (
+      //     a +
+      //     b.types.reduce((a, b) => {
+      //       return (
+      //         a +
+      //         b.sizes.reduce((a, b) => {
+      //           return a + b.item.count;
+      //         }, 0)
+      //       );
+      //     }, 0)
+      //   );
+      // }, 0);
       // TOTAL_PRICE();
       // TOTAL_COUNT();
     },
+  },
+  extraReducers: (build) => {
+    build.addCase(FETCH_PIZZAS.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    build.addCase(FETCH_PIZZAS.fulfilled, (state, action) => {
+      state.pizzas = action.payload;
+      state.isLoading = false;
+    });
   },
 });
 
