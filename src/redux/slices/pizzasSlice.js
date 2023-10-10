@@ -10,6 +10,37 @@ const pizzasSlice = createSlice({
     totalCount: 0,
   },
   reducers: {
+    // TOTAL_PRICE(state) {
+    //   debugger;
+    //   state.totalPrice = state.items.reduce((a, b) => {
+    //     return (
+    //       a +
+    //       b.types.reduce((a, b) => {
+    //         return (
+    //           a +
+    //           b.sizes.reduce((a, b) => {
+    //             return a + b.item.count * b.item.price[1];
+    //           }, 0)
+    //         );
+    //       }, 0)
+    //     );
+    //   }, 0);
+    // },
+    // TOTAL_COUNT(state) {
+    //   state.totalCount = state.items.reduce((a, b) => {
+    //     return (
+    //       a +
+    //       b.types.reduce((a, b) => {
+    //         return (
+    //           a +
+    //           b.sizes.reduce((a, b) => {
+    //             return a + b.item.count;
+    //           }, 0)
+    //         );
+    //       }, 0)
+    //     );
+    //   }, 0);
+    // },
     SET_PIZZAS(state, action) {
       state.pizzas = action.payload;
     },
@@ -76,6 +107,9 @@ const pizzasSlice = createSlice({
         );
       }, 0);
 
+      // this.TOTAL_PRICE();
+      // this.TOTAL_COUNT();
+
       state.totalCount = state.items.reduce((a, b) => {
         return (
           a +
@@ -140,6 +174,9 @@ const pizzasSlice = createSlice({
         })
         .filter((item) => item.types.length !== 0);
 
+      // TOTAL_PRICE();
+      // TOTAL_COUNT();
+
       state.totalPrice = state.items.reduce((a, b) => {
         debugger;
         return (
@@ -200,6 +237,9 @@ const pizzasSlice = createSlice({
         })
         .filter((item) => item.types.length !== 0);
 
+      // TOTAL_PRICE();
+      // TOTAL_COUNT();
+
       state.totalPrice = state.items.reduce((a, b) => {
         debugger;
         return (
@@ -230,6 +270,41 @@ const pizzasSlice = createSlice({
         );
       }, 0);
     },
+    CLEAR(state) {
+      state.items = [];
+
+      state.totalPrice = state.items.reduce((a, b) => {
+        debugger;
+        return (
+          a +
+          b.types.reduce((a, b) => {
+            return (
+              a +
+              b.sizes.reduce((a, b) => {
+                return a + b.item.count * b.item.price[1];
+              }, 0)
+            );
+          }, 0)
+        );
+      }, 0);
+
+      state.totalCount = state.items.reduce((a, b) => {
+        debugger;
+        return (
+          a +
+          b.types.reduce((a, b) => {
+            return (
+              a +
+              b.sizes.reduce((a, b) => {
+                return a + b.item.count;
+              }, 0)
+            );
+          }, 0)
+        );
+      }, 0);
+      // TOTAL_PRICE();
+      // TOTAL_COUNT();
+    },
   },
 });
 
@@ -239,5 +314,8 @@ export const {
   ADD_ITEM,
   REMOVE_ITEM,
   DELETE_ITEMS,
+  CLEAR,
+  TOTAL_PRICE,
+  TOTAL_COUNT,
 } = pizzasSlice.actions;
 export default pizzasSlice.reducer;
