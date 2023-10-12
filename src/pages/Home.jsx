@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import qs from "qs";
 import { useRef } from "react";
 
@@ -274,13 +274,14 @@ const Home = () => {
           ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
           : pizzas.map((key) => {
               return (
-                <PizzaBlock
-                  key={key.id}
-                  // title={key.title}
-                  // image={key.imageUrl}
-                  // types={key.types}
-                  {...key}
-                />
+                <Link key={key.id} to={`/pizza/${key.id}`}>
+                  <PizzaBlock
+                    // title={key.title}
+                    // image={key.imageUrl}
+                    // types={key.types}
+                    {...key}
+                  />
+                </Link>
               );
             })}
       </div>
